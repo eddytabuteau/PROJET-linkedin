@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<title>Lire une valeur dans un champs de texte</title>
+<meta charset="utf-8">
+<style>
+.bouton {
+background-color: rgba(137, 43, 226, 0.5);
+}
+.divgroupe{
+    display: flex;
+    width: 600px;
+    justify-content:space-around;
+    position: relative;
+    top:10px;
+    left: 20px;
+}
+.divIndiv{
+    background-color: rgba(100, 148, 237,0.2);
+    height: 35px;
+    width: 100px;
+    text-align: center;
+    position: relative;
+}
+span{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+</style>
+<script>
+    'use strict'
+
+
+var affichage;
+
+
+let calculateurDate = function (){
+ let saisie = document.getElementById("date").value;
+ let année = parseFloat(saisie.split('-')[0]);
+ let mois = parseFloat(saisie.split('-')[1]);
+ let jour = parseFloat(saisie.split('-')[2]);
+
+
+
+
+// différence des heures
+
+
+
+let dateNowAnnee = new Date().getFullYear()
+let dateNowMois = (new Date().getMonth())+1
+let dateNowjours = new Date().getDate()
+
+let dateNow = new Date(dateNowAnnee,dateNowMois,dateNowjours,0,0,0)
+let dateAnniversaire = new Date(année,mois,jour,0,0,0)
+let timeDiff = dateNow.getTime() - dateAnniversaire.getTime();
+         timeDiff= Math.round(timeDiff/1000) 
+        
+         let timeYears = (timeDiff -(timeDiff % 31556952))/31556952;
+         let timeDays = (((timeDiff % 31556952) - ((timeDiff % 31556952) % 86400))/86400);
+
+//date
+window.document.getElementsByTagName('span')[0].innerText=timeYears;
+window.document.getElementsByTagName('span')[1].innerText=timeDays;
+}
+let calculateurDateDeux = function (){
+
+affichage = setInterval(function(){
+    let saisie = document.getElementById("dateDeux").value;
+ console.log(saisie)
+ let annee = parseFloat(saisie.substring(0,4));
+ let mois = parseFloat(saisie.substring(5,7));
+ let jour = parseFloat(saisie.substring(8,10));
+ let heures = parseFloat(saisie.substring(11,13));
+ let minutes = parseFloat(saisie.substring(14,16));
+
+
+// différence des heures
+let dateNow = new Date()
+let deadline = new Date(annee,mois-1,jour,heures,minutes,0)
+let timeDiff = deadline.getTime() - dateNow.getTime() ;
+         timeDiff= Math.round(timeDiff/1000) 
+
+         let timeDays = (timeDiff - (timeDiff % 86400))/86400;
+
+         let tempsRestant = timeDiff-timeDays
+
+         let time = tempsRestant % 3600;
+         let timeHeures = (tempsRestant- time)/3600;
+         let timeDelta = time
+         time = time % 60 ;
+         let timeMinutes = (timeDelta-time)/60
+         let timeSecondes = time
+
+
+
+
+
+
+         window.document.getElementsByTagName('span')[2].innerText=timeDays;
+         window.document.getElementsByTagName('span')[3].innerText=timeHeures;
+         window.document.getElementsByTagName('span')[4].innerText=timeMinutes;
+         window.document.getElementsByTagName('span')[5].innerText=timeSecondes;
+
+},)}
+let stop = function(){
+				clearInterval(affichage)
+			}; 
+
+</script>
+<body> 
+
+<h2>Calculateur d'anniversaire</h2>
+<form>
+
+<label for="date">Date anniversaire : </label>
+<input type="date" id="date" name="date" value="">
+
+<input class="bouton" type="button" id="date" value="Calcul" onclick="calculateurDate()">
+
+<div class="divgroupe">
+    <div class="divIndiv"><span></span>Années</div>
+    <div class="divIndiv"><span></span>Jours</div>
+</div>
+<h2>Calculateur de deadline</h2>
+<label for="dateDeux">Date de la deadline : </label>
+<input type="datetime-local" id="dateDeux" name="dateDeux" value="">
+
+<input class="bouton" type="button" id="dateDeux" value="Calcul" onclick="calculateurDateDeux()">
+<input class="bouton" type="button" value="Arrêter le compteur" onclick="stop()">
+
+<div class="divgroupe" >
+    <div class="divIndiv" ><span></span>Jours </div>
+    <div class="divIndiv"><span></span>Heures</div>
+    <div class="divIndiv"><span></span>Minutes</div>
+    <div class="divIndiv"><span></span>Secondes</div>
+</div>
+
+</form>
+</body>
+</html>
